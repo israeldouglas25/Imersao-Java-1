@@ -1,49 +1,42 @@
+import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.List;
-import java.util.Map;
 
 public class App {
     /**
      * @param args
+     * @throws IOException
+     * @throws MalformedURLException
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
 
-        // fazer uma conexão HTTP e buscar os top 250 filmes
         String apiKey = "k_t6g1hx9p";
         String url = "https://imdb-api.com/en/API/Top250Movies/" + apiKey;
-        URI endereco = URI.create(url);
-        var client = HttpClient.newHttpClient();
-        var request = HttpRequest.newBuilder(endereco).GET().build();
-        HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-        String body = response.body();
-        // System.out.println(body);
+        ExtratorConteudo extrator = new ExtratorConteudoImdb();
 
-        // extrair só os dados que interessam (titulo, poster, classificação)
-        JsonParser parser = new JsonParser();
-        List<Map<String, String>> listaDeFilmes = parser.parse(body);
-        // System.out.println(listaDeFilmes.size());
-        // System.out.println(listaDeFilmes.get(0));
+        // buscar imgens da nasa
+        // String url = "https://api.nasa.gov/planetary/apod?api_key=n6mPjOHkLFL3Ry9GlZ22FMC6fKo1JItHpNjRLjF4&start_date=2022-11-15&end_date=2022-11-20";
+        // ExtratorConteudo extrator = new ExtratorConteudoNasa();
+
+        var http = new ClientHttp();
+        String json = http.buscaDados(url);
+
+        List<Conteudo> conteudos = extrator.extrairConteudos(json);
+
 
         var geradora = new GeradoraFigurinhas();
 
         for(int i=0; i < 5; i++){
-            Map<String, String> filme = listaDeFilmes.get(i);
+            Conteudo conteudo = conteudos.get(i);
 
-            String urlImagem = filme.get("image").replaceAll("(@+)(.*).jpg$", "$1.jpg");
-            String titulo = filme.get("title");
-
-            InputStream inputStream = new URL(urlImagem).openStream();
-            String nomeArquivo = "saida/" + titulo + ".png";
+            InputStream inputStream = new URL(conteudo.getUrlImagem()).openStream();
+            String nomeArquivo = "saida/" + conteudo.getTitulo() + ".png";
 
             geradora.cria(inputStream, nomeArquivo);
-            System.out.println(filme.get("title"));
+            System.out.println(conteudo.getTitulo());
         }
 
         // exibir os dados

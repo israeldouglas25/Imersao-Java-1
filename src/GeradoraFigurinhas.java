@@ -29,7 +29,7 @@ public class GeradoraFigurinhas {
         graphics.setFont(fonte);
 
         // escreve a msg na imagem
-        graphics.drawString("TOP 5", 150, novaAltura - 150);
+        graphics.drawString("Imagens Satelite", 150, novaAltura - 150);
 
         // escreve a imagem em um arquivo
         ImageIO.write(novaImagem, "png", new File(nomeArquivo));
