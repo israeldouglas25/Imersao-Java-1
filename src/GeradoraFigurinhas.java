@@ -21,15 +21,15 @@ public class GeradoraFigurinhas {
 
         // copiar a imagem original para nova (em memoria)
         Graphics2D graphics = (Graphics2D) novaImagem.getGraphics();
-        graphics.drawImage(imagemOriginal, 0, 200, null);
+        graphics.drawImage(imagemOriginal, 0, 100, null);
 
         // configurar a fonte
-        var fonte = new Font("Impact", Font.BOLD, 88);
-        graphics.setColor(Color.RED);
+        var fonte = new Font("Impact", Font.BOLD, 32);
+        graphics.setColor(Color.YELLOW);
         graphics.setFont(fonte);
 
         // escreve a msg na imagem
-        graphics.drawString("Imagens Satelite", 150, novaAltura - 150);
+        graphics.drawString("TOP", 85, novaAltura - 30);
 
         // escreve a imagem em um arquivo
         ImageIO.write(novaImagem, "png", new File(nomeArquivo));

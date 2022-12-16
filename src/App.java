@@ -13,13 +13,16 @@ public class App {
      */
     public static void main(String[] args) throws Exception {
 
-        String apiKey = "k_t6g1hx9p";
-        String url = "https://imdb-api.com/en/API/Top250Movies/" + apiKey;
-        ExtratorConteudo extrator = new ExtratorConteudoImdb();
+        // String apiKey = "k_t6g1hx9p";
+        // String url = "https://imdb-api.com/en/API/Top250Movies/" + apiKey;
+        // ExtratorConteudo extrator = new ExtratorConteudoImdb();
 
         // buscar imgens da nasa
         // String url = "https://api.nasa.gov/planetary/apod?api_key=n6mPjOHkLFL3Ry9GlZ22FMC6fKo1JItHpNjRLjF4&start_date=2022-11-15&end_date=2022-11-20";
         // ExtratorConteudo extrator = new ExtratorConteudoNasa();
+
+        String url = "http://localhost:8080/linguagens";
+        ExtratorConteudo extrator = new ExtratorConteudoImdb();
 
         var http = new ClientHttp();
         String json = http.buscaDados(url);
@@ -29,7 +32,7 @@ public class App {
 
         var geradora = new GeradoraFigurinhas();
 
-        for(int i=0; i < 5; i++){
+        for(int i=0; i < conteudos.size(); i++){
             Conteudo conteudo = conteudos.get(i);
 
             InputStream inputStream = new URL(conteudo.getUrlImagem()).openStream();
